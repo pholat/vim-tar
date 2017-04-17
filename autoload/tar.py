@@ -10,46 +10,50 @@ class Node(object):
     def add_child(self, obj):
         self.children.append(obj)
 
-def TreeFindFile(Node root, string name):
-    if root.data.getmembers() == name:
-        return root
+def TreeFindFile( root, name ):
+    print "Looking in: ",root.data.name, " : ", name
+    for a in root.data.getmembers():
+        print a.name
+        if a.name == name:
+            return root
     for nodes in root.children:
         retval = TreeFindFile( nodes, name )
         if retval != None:
             return retval
 
-root=None
-
 def lol():
     print "LOL"
 
+class Tree():
+    root=None
+
 #TODO add by parent
-def tarlist( string filename):
-    try:
-        ins=isinstance( filename, str )
-        if tarfile.is_tarfile( filename if ins else filename.name ) 
-            tar=tarfile.open(filename, 'r')
-            if root == None:
-                root = Node(tar)
-            else
-                root.add_child( tar )
-            for a in tar.getmembers():
-                vim.current.buffer.append( a.name )
+def tarlist( filename ):
+#    try:
+    ins=isinstance( filename, str )
+    if tarfile.is_tarfile( filename if ins else filename.name ):
+        tar=tarfile.open(filename, 'r')
+        if Tree.root == None:
+            Tree.root = Node(tar)
         else:
-            print "File: ", filename, " isn't a tar file"
-    except:
-        print "No such file: ", filename
-    return tar
+            Tree.root.add_child( tar )
+        for a in tar.getmembers():
+            vim.current.buffer.append( a.name )
+        return tar
+    else:
+        print "File: ", filename, " isn't a tar file"
+#    except:
+#        print "No such file: ", filename, a.str()
 
 def tarbrowse(filename):
     filename = filename[1:-1]
-    root.add_child( tarlist(filename) )
+    tmpvar=tarlist(filename)
 
 #TODO add enter -> enter file and add listing 
 def tarenter():
     file2open=vim.current.line
-    if not TreeFindFile( root, file2open ) == None:
-        file2open = root.extractfile( file2open )
+    if not TreeFindFile( Tree.root, file2open ) == None:
+        file2open = Tree.root.data.extractfile( file2open )
         tarlist(file2open)
 
 #TODO print all again with newlisting: preorder tree walk
