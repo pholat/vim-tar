@@ -5,12 +5,8 @@ if exists('g:loaded_tar') || &cp
   finish
 endif
 
-function tar#tarlol()
+function tar#lol()
     exe 'python lol()'
-endfunction
-
-function tar#tarlist(var)
-    exe 'python tarlist("'a:var'")'
 endfunction
 
 function tar#Browse(var)
